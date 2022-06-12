@@ -1,8 +1,12 @@
 from django.test import TestCase
 
-from wagtail.tests.utils import WagtailTestUtils
-
 from treemodeladmin.tests.treemodeladmintest.models import Author, Book
+
+
+try:
+    from wagtail.test.utils import WagtailTestUtils
+except ImportError:
+    from wagtail.tests.utils import WagtailTestUtils
 
 
 class TestAuthorIndexView(TestCase, WagtailTestUtils):

@@ -1,5 +1,7 @@
 import os
 
+from wagtail import VERSION
+
 
 DEBUG = True
 
@@ -26,7 +28,6 @@ WAGTAIL_APPS = (
     "wagtail.contrib.forms",
     "wagtail.contrib.modeladmin",
     "wagtail.contrib.settings",
-    "wagtail.tests.testapp",
     "wagtail.admin",
     "wagtail.core",
     "wagtail.documents",
@@ -35,10 +36,20 @@ WAGTAIL_APPS = (
     "wagtail.users",
 )
 
-WAGTAILADMIN_RICH_TEXT_EDITORS = {
-    "default": {"WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea"},
-    "custom": {"WIDGET": "wagtail.tests.testapp.rich_text.CustomRichTextArea"},
-}
+if VERSION < (3, 0, 0):
+    WAGTAIL_APPS += ("wagtail.tests.testapp",)
+
+    WAGTAILADMIN_RICH_TEXT_EDITORS = {
+        "default": {"WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea"},
+        "custom": {"WIDGET": "wagtail.tests.testapp.rich_text.CustomRichTextArea"},
+    }
+else:
+    WAGTAIL_APPS += ("wagtail.test.testapp",)
+
+    WAGTAILADMIN_RICH_TEXT_EDITORS = {
+        "default": {"WIDGET": "wagtail.admin.rich_text.DraftailRichTextArea"},
+        "custom": {"WIDGET": "wagtail.test.testapp.rich_text.CustomRichTextArea"},
+    }
 
 MIDDLEWARE = (
     "django.middleware.common.CommonMiddleware",
