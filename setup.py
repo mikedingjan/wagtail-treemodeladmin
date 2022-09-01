@@ -1,7 +1,7 @@
 from setuptools import find_packages, setup
 
 install_requires = [
-    "wagtail>=2.16,<3.1",
+    "wagtail>=2.16,<4.1",
 ]
 
 testing_extras = ["coverage>=3.7.0"]
