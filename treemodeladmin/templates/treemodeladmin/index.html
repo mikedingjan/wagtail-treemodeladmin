@@ -1,9 +1,18 @@
 {% extends "modeladmin/index.html" %}
 {% load i18n modeladmin_tags treemodeladmin_tags %}
 
-{% block header %}
-    {% include "treemodeladmin/includes/header.html" %}
-{% endblock %}
+{% block header_extra %}{% endblock header_extra%}
+
+{% block breadcrumb %}
+    {% include "treemodeladmin/includes/breadcrumb.html" %}
+{% endblock breadcrumb %}
+
+{% block h1 %}
+    {{ block.super }}
+
+    {% include 'modeladmin/includes/button.html' with button=view.get_parent_edit_button %}
+    {% include 'modeladmin/includes/button.html' with button=view.get_add_button_with_parent %}
+{% endblock h1 %}
 
 {% block result_list %}
     {% if not all_count %}
@@ -14,12 +23,14 @@
                     {% for type in required_parent_types %}<li><b>{{ type|title }}</b></li>{% endfor %}
                 </ul>
             {% else %}
-                <p>{% blocktrans with view.verbose_name_plural as name %}No {{ name }} have been created yet.{% endblocktrans %}
-                {% if user_can_create %}
-                    {% blocktrans with view.create_url as url %}
-                        Why not <a href="{{ url }}">add one</a>?
-                    {% endblocktrans %}
-                {% endif %}</p>
+                <p>
+                    {% blocktrans with view.verbose_name_plural as name %}No {{ name }} have been created yet.{% endblocktrans %}
+                    {% if user_can_create %}
+                        {% blocktrans with view.create_url as url %}
+                            Why not <a href="{{ url }}">add one</a>?
+                        {% endblocktrans %}
+                    {% endif %}
+                </p>
             {% endif %}
         </div>
     {% elif view.has_child %}
@@ -27,4 +38,4 @@
     {% else %}
         {% result_list %}
     {% endif %}
-{% endblock %}
+{% endblock result_list %}
